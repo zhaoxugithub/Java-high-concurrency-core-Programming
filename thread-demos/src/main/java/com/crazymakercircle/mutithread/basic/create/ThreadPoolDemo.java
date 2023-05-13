@@ -1,5 +1,6 @@
 package com.crazymakercircle.mutithread.basic.create;
 
+import com.crazymakercircle.cocurrent.TargetTask;
 import com.crazymakercircle.mutithread.basic.create3.CreateThreadPoolDemo;
 import com.crazymakercircle.util.Print;
 import com.crazymakercircle.util.ThreadUtil;
@@ -78,7 +79,7 @@ public class ThreadPoolDemo {
         for (int i = 0; i < 1000; i++) {
             try {
                 sleepMilliSeconds(10);
-                pool.submit(new CreateThreadPoolDemo.TargetTask());
+                pool.submit(new TargetTask());
 
             } catch (RejectedExecutionException e) {
                 e.printStackTrace();
