@@ -1,5 +1,6 @@
 package com.crazymakercircle.mutithread.basic.create3;
 
+import com.crazymakercircle.cocurrent.TargetTask;
 import com.crazymakercircle.util.Print;
 import com.crazymakercircle.util.RandomUtil;
 import org.junit.Test;
@@ -16,33 +17,9 @@ import static com.crazymakercircle.util.ThreadUtil.sleepSeconds;
 
 public class CreateThreadPoolDemo {
 
-    public static final int SLEEP_GAP = 500;
     public static final int MAX_TURN = 5;
 
-    //异步的执行目标类
-    public static class TargetTask implements Runnable {
-        static AtomicInteger taskNo = new AtomicInteger(1);
-        protected String taskName;
 
-        public TargetTask() {
-            taskName = "task-" + taskNo.get();
-            taskNo.incrementAndGet();
-        }
-
-        public void run() {
-
-            Print.tco("任务：" + taskName + " doing");
-            // 线程睡眠一会
-            sleepMilliSeconds(SLEEP_GAP);
-
-            Print.tco(taskName + " 运行结束.");
-        }
-
-        @Override
-        public String toString() {
-            return "TargetTask{" + taskName + '}';
-        }
-    }
 
     //异步的执行目标类：执行过程中将发生异常
     static class TargetTaskWithError extends TargetTask {
