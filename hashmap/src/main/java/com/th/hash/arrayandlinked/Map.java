@@ -1,4 +1,4 @@
-package com.th.hash;
+package com.th.hash.arrayandlinked;
 
 /**
  * @ClassName: Map

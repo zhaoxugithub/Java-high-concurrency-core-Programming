@@ -1,10 +1,9 @@
-package com.th.hash;
+package com.th.hash.arrayandlinkedandrbt;
 
-import com.th.list.linked.SingleLinkedList;
+
 import com.th.tree.printer.BinaryTreeInfo;
 import com.th.tree.printer.BinaryTrees;
 
-import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Queue;
@@ -38,8 +37,6 @@ public class HashMap<K, V> implements Map<K, V> {
      */
     int threshold;
 
-    // 负载因子
-    float loadFactor = 0.75F;
     // 数组
     Node<K, V>[] table;
 
@@ -47,17 +44,10 @@ public class HashMap<K, V> implements Map<K, V> {
     private int size;
 
 
-    //比较器
-    private Comparator<K> comparator;
-
     public HashMap() {
-
+        threshold = (int) (DEFAULT_CAPACITY * DEFAULT_LOAD_FACTOR);
     }
 
-    public HashMap(Comparator<K> comparator) {
-        this.comparator = comparator;
-
-    }
 
     /**
      * 规定传入对象的比较规则
@@ -123,23 +113,24 @@ public class HashMap<K, V> implements Map<K, V> {
         }
 
         // 开始时插入元素
-        if ((parent = tab[i = (n - 1) & hash]) == null) {
+        if ((parent = tab[i = hash]) == null) {
             System.out.println("数组插入的key:" + key + ",value:" + value);
             //如果没有hash碰撞,就直接插入数组中
             tab[i] = new Node<>(hash, key, value, null);
+            ++size;
 
         } else { //有哈希碰撞时,需要判断是红黑树还是链表
             // 下一个子结点
             Node<K, V> next;
             K k;
-            System.out.println("有哈希碰撞的key:" + key + ",value:" + value);
+            System.out.println("下标："+i+"，有哈希碰撞的key:" + key + ",value:" + value);
             if (parent.hash == hash
                     && ((k = parent.key) == key || (key != null && key.equals(k)))) {
                 // 哈希碰撞,且节点已存在,直接替换数组元素
                 next = parent;
             } else if (parent instanceof RBTreeNode) {
                 // 如果是红黑树节点,就插入红黑树节点
-                System.out.println("往红黑树中插入的key:" + key + ",value:" + value);
+                System.out.println("下标："+i+"，往红黑树中插入的key:" + key + ",value:" + value);
                 //先找到root根节点
                 int index = (tab.length - 1) & hash;
                 //取出红黑树的根结点
@@ -148,8 +139,8 @@ public class HashMap<K, V> implements Map<K, V> {
 
                 putRBTreeVal(root, hash, key, value);
             } else {
-                System.out.println("链表插入的key:" + key + ",value:" + value);
-                printLinked(hash);
+                System.out.println("下标："+i+"，链表插入的key:" + key + ",value:" + value);
+
                 // 哈希碰撞, 链表插入
                 for (int linkSize = 0; ; ++linkSize) {
                     // System.out.println("linkSize="+linkSize+",node:"+parent);
@@ -180,9 +171,11 @@ public class HashMap<K, V> implements Map<K, V> {
                     }
                     parent = next;
                 }
+                printLinked(hash);
             }
         }
-        if (++size > DEFAULT_CAPACITY * DEFAULT_LOAD_FACTOR) {
+        if (size > threshold ){
+            //扩容操作
             ensureCapacity();
         }
         return value;
@@ -198,14 +191,15 @@ public class HashMap<K, V> implements Map<K, V> {
         // 通过hash计算出当前table数组的位置
         int index = (tab.length - 1) & hash;
         Node<K, V> node = tab[index];
-        RBTreeNode<K, V>[] rbTable = new RBTreeNode[linkSize + 1];
+       // RBTreeNode<K, V>[] rbTable = new RBTreeNode[linkSize + 1];
         int n = 0;
         //遍历链表中的每个节点,将链表转换为红黑树
 
         do {
             //把链表结点转换成红黑树结点
             RBTreeNode<K, V> next = replacementTreeNode(node, null);
-            rbTable[n] = next;
+            putRBTreeVal(next, hash, next.key, next.value);
+           // rbTable[n] = next;
             System.out.println("转换成红黑树数组的循环次数:" + n);
             ++n;
 
@@ -213,13 +207,11 @@ public class HashMap<K, V> implements Map<K, V> {
         } while (node != null);
         System.out.println("n:" + n);
         // 输出数组元素
-        for (int i = 0; i < n; i++) {
+      /*  for (int i = 0; i < n; i++) {
             System.out.println("i:" + i + ":" + rbTable[i] + ",");
             putRBTreeVal(rbTable[i], hash, rbTable[i].key, rbTable[i].value);
-            // 是否需要层高达到3的时候做平衡
-            // fixAfterPut( rbTable[i+1], hash);
 
-        }
+        }*/
 
         print(hash);
     }
@@ -239,20 +231,21 @@ public class HashMap<K, V> implements Map<K, V> {
     /**
      * 把新增结点添加到红黑树中,进入此方法的hash值都是相同的
      *
-     * @param tabnode tab[table.length-1 & hash]中的节点或者新增节点
+     * @param tabnode tab[ hash]中的节点或者新增节点
      * @param hash    hash值
      * @param key     key值
      * @param value   value值
      */
     RBTreeNode<K, V> putRBTreeVal(RBTreeNode<K, V> tabnode, int hash, K key, V value) {
-        if ((table[(table.length - 1) & hash]) instanceof RBTreeNode) {
+        if ((table[hash]) instanceof RBTreeNode) {
 
-            RBTreeNode<K, V> root = (RBTreeNode<K, V>) table[(table.length - 1) & hash];
+            RBTreeNode<K, V> root = (RBTreeNode<K, V>) table[hash];
             RBTreeNode<K, V> parent = root;
             RBTreeNode<K, V> node = root;
 
             int cmp = 0;
 
+            // 先找到父节点
             do {
                 parent = node;
                 K k1 = node.key;
@@ -260,10 +253,8 @@ public class HashMap<K, V> implements Map<K, V> {
                 cmp = compare(key, k1);
                 if (cmp > 0) {
                     node = node.right;
-                    //node.right =tabnode;
                 } else if (cmp < 0) {
                     node = node.left;
-                    // node.left = tabnode;
                 } else {
                     V oldValue = node.value;
                     node.key = key;
@@ -275,19 +266,18 @@ public class HashMap<K, V> implements Map<K, V> {
             } while (node != null);
 
 
+            //插入新节点
             RBTreeNode<K, V> newNode = new RBTreeNode<>(hash, key, value, parent);
             if (cmp > 0) {
                 parent.right = newNode;
-
             } else if (cmp < 0) {
                 parent.left = newNode;
             }
             newNode.parent = parent;
-            size++;
-
+            //插入成功后自平衡操作
             fixAfterPut(newNode, hash);
         } else {
-            table[(table.length - 1) & hash] = tabnode;
+            table[hash] = tabnode;
             fixAfterPut(tabnode, hash);
 
         }
@@ -468,26 +458,27 @@ public class HashMap<K, V> implements Map<K, V> {
         int oldCapacity = 0;
         if (table == null || table.length == 0) {
             table = new Node[DEFAULT_CAPACITY];
-            oldCapacity = table.length;
             return table;
         }
+        oldCapacity = table.length;
         int newCapacity = 0;
         // 如果数组的长度 == 容量
-        if (size == oldCapacity * loadFactor) {
+        if (size > threshold) {
             // 新容量为旧容量的1.5倍
             newCapacity = oldCapacity + (oldCapacity >> 1);
 
-            threshold = (int) (newCapacity * loadFactor);
+            threshold = (int) (newCapacity * DEFAULT_LOAD_FACTOR);
 
             Node<K, V>[] newTable = new Node[newCapacity];
             // 把原来数组中的元素放到新数组中
             for (int i = 0; i < size; i++) {
                 newTable[i] = table[i];
             }
+             System.out.println(oldCapacity + "扩容为" + newCapacity);
             table = newTable;
         }
 
-        // System.out.println(oldCapacity + "扩容为" + newCapacity);
+
         return table;
     }
 
@@ -507,7 +498,7 @@ public class HashMap<K, V> implements Map<K, V> {
         int index;
         V oldValue = null;
         //节点是存在的
-        if ((parent = table[index = (table.length - 1) & hash]) != null) {
+        if ((parent = table[index = hash]) != null) {
             if (parent instanceof RBTreeNode) { // 红黑树删除
 
 
@@ -557,13 +548,13 @@ public class HashMap<K, V> implements Map<K, V> {
                     fixAfterRemove(removeNode, hash);
 
                 }
-                System.out.println("删除结点后的红黑树:"+key);
+                System.out.println("删除结点后的红黑树:" + key);
                 print(hash);
                 size--;
                 return oldValue;
             } else if (parent.next != null) { //链表删除
                 Node<K, V> node = parent;
-                Node<K,V> preNode = null;
+                Node<K, V> preNode = null;
                 for (int linkSize = 0; ; ++linkSize) {
 
                     if (node.hash == hash
@@ -595,18 +586,19 @@ public class HashMap<K, V> implements Map<K, V> {
                     }
 
                 }
-                System.out.println("链表删除元素:"+key);
+                System.out.println("链表删除元素:" + key);
                 printLinked(hash);
             } else { //数组删除
                 if (parent.hash == hash
                         && ((k = parent.key) == key || (key != null && key.equals(k)))) {
                     oldValue = parent.value;
-                    for (int i = index + 1; i < table.length; i++) {
+                  /*  for (int i = index + 1; i < table.length; i++) {
                         table[i - 1] = table[i];
                     }
                     --size;
-                    table[(table.length-1)] =null;
-                    return  oldValue;
+                    table[(table.length - 1)] = null;*/
+                    table[index] = null;
+                    return oldValue;
                 }
 
 
@@ -742,7 +734,7 @@ public class HashMap<K, V> implements Map<K, V> {
 
         //如果数组为空,并且长度为空, hash槽位对应的节点为空,就返回null
         if ((tab = table) != null && (n = table.length) > 0
-                && (parent = tab[(n - 1) & hash]) != null) {
+                && (parent = tab[ hash]) != null) {
             // 如果计算出来的hash槽位所对应的结点hash值等于hash值,结点的key=查找key值,
             // 返回hash槽位对应的结点,即数组
             if (parent.hash == hash && ((k = parent.key) == key || (key != null && key.equals(k)))) {
@@ -830,7 +822,7 @@ public class HashMap<K, V> implements Map<K, V> {
     public void print(int hash) {
 
 
-        final RBTreeNode<K, V> root = (RBTreeNode<K, V>) table[(table.length - 1) & hash];
+        final RBTreeNode<K, V> root = (RBTreeNode<K, V>) table[ hash];
         BinaryTrees.println(new BinaryTreeInfo() {
             @Override
             public Object string(Object node) {
@@ -857,26 +849,28 @@ public class HashMap<K, V> implements Map<K, V> {
 
     /**
      * 链表打印
+     *
      * @param hash
      */
     public String printLinked(int hash) {
         StringBuilder string = new StringBuilder();
-        string.append("size=").append(size).append(", [");
-        Node<K,V> node = table[(table.length-1)&hash];
-
-        for(int linkSize=0;;++linkSize){
+        string.append(" [");
+        Node<K, V> node = table[ hash];
+        int n =0;
+        for (int linkSize = 0; ; ++linkSize) {
 
             if (linkSize != 0) {
                 string.append("->");
-                string.append(node.key+"="+node.value);
+                string.append(node.key + "=" + node.value);
                 node = node.next;
+                ++n;
             }
-            if (node == null ){
+            if (node == null) {
                 break;
             }
         }
-        string.append("]");
-        System.out.println( string.toString());
+        string.append("],链表长度："+n);
+        System.out.println(string.toString());
         return string.toString();
     }
 
@@ -887,39 +881,43 @@ public class HashMap<K, V> implements Map<K, V> {
 
     @Override
     public boolean containsValue(V value) {
-       for (int i=0 ;i<table.length;i++){
-            Node<K,V> node = table[i];
+        for (int i = 0; i < table.length; i++) {
+            Node<K, V> node = table[i];
+            if (node != null){
+                // 如果结点是红黑树
+                if (node instanceof RBTreeNode) {
+                    Queue<RBTreeNode<K, V>> queue = new LinkedList<>();
+                    queue.offer((RBTreeNode<K, V>) node);
+                    while (!queue.isEmpty()) {
+                        RBTreeNode<K, V> rbNode = queue.poll();
+                        if (Objects.equals(value, rbNode.value)) {
+                            return true;
+                        }
 
-           // 如果结点是红黑树
-           if (node instanceof RBTreeNode){
-               Queue<RBTreeNode<K, V>> queue = new LinkedList<>();
-               queue.offer((RBTreeNode<K, V>) node);
-               while (!queue.isEmpty()) {
-                   RBTreeNode<K, V> rbNode = queue.poll();
-                   if (Objects.equals(value, rbNode.value)) {
-                       return true;
-                   }
+                        if (rbNode.left != null) {
+                            queue.offer(rbNode.left);
+                        }
+                        if (rbNode.right != null) {
+                            queue.offer(rbNode.right);
+                        }
+                    }
+                } else if (node.next != null) {
+                    // 链表中循环
+                    do {
+                        if (node.value == value || (value != null && node.value.equals(value))) {
+                            return true;
+                        }
 
-                   if (rbNode.left != null) {
-                       queue.offer(rbNode.left);
-                   }
-                   if (rbNode.right != null) {
-                       queue.offer(rbNode.right);
-                   }
-               }
-           }else if( node.next != null){
-               // 链表中循环
-               do {
-                   if (node .value == value){
-                       return  true;
-                   }
+                    } while ((node = node.next) != null);
+                } else if (node.value == value) {  //如果结点是数组, 直接比较值
+                    if (node.value == value || (value != null && node.value.equals(value))) {
+                        return true;
+                    }
+                }
+            }
 
-               }while ((node =node.next)!=null);
-           }else  if (node.value == value){  //如果结点是数组, 直接比较值
-               return  true;
-           }
-       }
-       return  false;
+        }
+        return false;
     }
 
 
