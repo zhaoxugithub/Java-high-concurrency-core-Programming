@@ -1,33 +1,24 @@
 package com.crazymakercircle.im.common;
 
 public class ProtoInstant {
-
     /**
      * 消息类型
      */
     public class MsgType {
-
-        //登陆请求
+        // 登陆请求
         public static final int OP_Login_REQUEST = 1;
-
-        //登陆应答
+        // 登陆应答
         public static final int OP_Login_RESPONSE = 2;
-
-
-        //心跳请求
+        // 心跳请求
         public static final int OP_HEARTBEAT_REQUEST = 3;
-        //心跳应答
+        // 心跳应答
         public static final int OP_HEARTBEAT_RESPONSE = 4;
-        //IM消息请求
+        // IM消息请求
         public static final int OP_MESSAGE_REQUEST = 5;
-
-        //IM消息应答
+        // IM消息应答
         public static final int OP_MESSAGE_RESPONSE = 6;
-
-
-        //通知应答
+        // 通知应答
         public static final int OP_NOTIFICATION = 7;
-
     }
 
     /**
@@ -38,7 +29,6 @@ public class ProtoInstant {
          * windwos
          */
         public static final int WINDOWS = 1;
-
         /**
          * mac
          */
@@ -59,15 +49,12 @@ public class ProtoInstant {
          * 未知
          */
         public static final int UNKNOWN = 6;
-
-
     }
 
     /**
      * 协议细节
      */
     public class Protocal {
-
         /**
          * 报文头长度
          */
@@ -83,13 +70,11 @@ public class ProtoInstant {
      * 返回码枚举类
      */
     public enum ResultCodeEnum {
-
         SUCCESS(0, "Success"),  // 成功
         AUTH_FAILED(1, "登录失败"),
         NO_TOKEN(2, "没有授权码"),
         UNKNOW_ERROR(3, "未知错误"),
         ;
-
         private Integer code;
         private String desc;
 
@@ -105,7 +90,5 @@ public class ProtoInstant {
         public String getDesc() {
             return desc;
         }
-
     }
-
 }

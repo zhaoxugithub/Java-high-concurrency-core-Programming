@@ -8,19 +8,16 @@ import com.crazymakercircle.util.Print;
  */
 
 public class ObjectWateNotifyAllDemo {
-
     public static final int SLEEP_GAP = 30 * 1000;
     public static Object locko = new Object();
 
     static class ObjectWaitThread extends Thread {
-
-        static int threadNO = 1;//线程编号
+        static int threadNO = 1;// 线程编号
 
         public ObjectWaitThread() {
             super("objectWaitThread-" + threadNO);
             threadNO++;
         }
-
 
         public void run() {
 
@@ -42,15 +39,11 @@ public class ObjectWateNotifyAllDemo {
 
     public static void main(String args[]) throws InterruptedException {
         Print.cfo("当前进程的ID是" + JvmUtil.getProcessID());
-
-        //演示WAITING状态的线程
+        // 演示WAITING状态的线程
         for (int i = 0; i < 4; i++) {
             new ObjectWaitThread().start();
         }
-
         Thread.sleep(1000);
-
-
         Thread notifyThread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -70,7 +63,5 @@ public class ObjectWateNotifyAllDemo {
             }
         }, "notifyThread");
         notifyThread.start();
-
     }
-
 }

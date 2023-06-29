@@ -4,13 +4,11 @@
 
 package com.crazymakercircle.cocurrent;
 
-
 import org.apache.log4j.Logger;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
 
 public class FutureTaskScheduler extends Thread {
     private final Logger logger = Logger.getLogger(this.getClass());
@@ -18,7 +16,6 @@ public class FutureTaskScheduler extends Thread {
             new ConcurrentLinkedQueue<ExecuteTask>();// 任务队列
     private long sleepTime = 200;// 线程休眠时间
     private ExecutorService pool = Executors.newFixedThreadPool(20);
-
     private static FutureTaskScheduler inst = new FutureTaskScheduler();
 
     private FutureTaskScheduler() {
@@ -30,8 +27,6 @@ public class FutureTaskScheduler extends Thread {
      *
      * @param executeTask
      */
-
-
     public static void add(ExecuteTask executeTask) {
         inst.executeTaskQueue.add(executeTask);
     }

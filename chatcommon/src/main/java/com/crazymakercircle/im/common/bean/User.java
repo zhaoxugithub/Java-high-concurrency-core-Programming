@@ -8,14 +8,13 @@ import java.io.Serializable;
 
 @Slf4j
 public class User implements Serializable {
-
     String uid;
     String devId;
     String token;
     String nickName;
     transient PLATTYPE platform;
     int intPlatFrom;
-    public volatile int age; //年龄
+    public volatile int age; // 年龄
 
     public User() {
         nickName = "nickName";
@@ -36,10 +35,8 @@ public class User implements Serializable {
 
     @JSONField(serialize = false)
     public void setPlatform(PLATTYPE platform) {
-
         this.platform = platform;
         this.intPlatFrom = platform.ordinal();
-
     }
 
     @JSONField(serialize = false)
@@ -81,7 +78,6 @@ public class User implements Serializable {
         user.setIntPlatFrom(info.getPlatform());
         log.info("登录中: {}", user.toString());
         return user;
-
     }
 
     public String getUid() {
@@ -123,6 +119,4 @@ public class User implements Serializable {
     public void setSessionId(String sessionId) {
         this.sessionId = sessionId;
     }
-
-
 }

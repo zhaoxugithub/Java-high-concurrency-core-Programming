@@ -37,7 +37,6 @@ public class ClientFactory {
     public static CuratorFramework createWithOptions(
             String connectionString, RetryPolicy retryPolicy,
             int connectionTimeoutMs, int sessionTimeoutMs) {
-
         // builder 模式创建 CuratorFramework 实例
         return CuratorFrameworkFactory.builder()
                 .connectString(connectionString)

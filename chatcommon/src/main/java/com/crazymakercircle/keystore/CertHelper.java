@@ -22,7 +22,6 @@ public class CertHelper {
     String CA_SHA = "SHA256WithRSAEncryption";
 
     public CertHelper(String dname) {
-
         this.dname = dname;
     }
 
@@ -35,7 +34,6 @@ public class CertHelper {
      * 公钥和私钥对
      */
     protected KeyPair keyPair = null;
-
 
     public KeyPair getKeyPair() {
         return keyPair;
@@ -55,7 +53,6 @@ public class CertHelper {
             // 初始化为 2048 位，这个长度的密钥目前可认为无法被暴力破解
             kpg.initialize(2048);
             keyPair = kpg.generateKeyPair();
-
             // 私钥
             PrivateKey privateKey = this.keyPair.getPrivate();
 
@@ -65,19 +62,17 @@ public class CertHelper {
             X509V3CertificateGenerator certGen = new X509V3CertificateGenerator();
             // 设置序列号
             certGen.setSerialNumber(BigInteger.valueOf(1));
-
-            //颁发者证书
+            // 颁发者证书
             X500Principal issuerDN = new X500Principal(dname);
-            //使用者证书,在自签证书中，颁发者证书和使用者证书两者一样
+            // 使用者证书,在自签证书中，颁发者证书和使用者证书两者一样
             X500Principal subjectDN = issuerDN;
-
             // 设置颁发者
             certGen.setIssuerDN(issuerDN);
             // 设置有效期
             certGen.setNotBefore(new Date());
             GregorianCalendar calendar = new GregorianCalendar();
             calendar.setTime(new Date());
-            //1年过期
+            // 1年过期
             calendar.add(1, 1);
             certGen.setNotAfter(calendar.getTime());
             // 设置使用者

@@ -4,7 +4,6 @@
 
 package com.crazymakercircle.cocurrent;
 
-
 import com.lmax.disruptor.*;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
@@ -20,7 +19,6 @@ public class DisruptorTaskScheduler {
     private static DisruptorTaskScheduler inst = new DisruptorTaskScheduler();
     private TaskScheduler scheduler = new TaskScheduler();
 
-
     private DisruptorTaskScheduler() {
         scheduler.start();
     }
@@ -32,9 +30,7 @@ public class DisruptorTaskScheduler {
      */
     public static void add(Runnable executeTask) {
         inst.scheduler.sendNotify(executeTask);
-
     }
-
 
     @Data
     public class NotifyEvent {
@@ -49,14 +45,12 @@ public class DisruptorTaskScheduler {
         }
     }
 
-    //创建消费者，此处用于处理业务逻辑
+    // 创建消费者，此处用于处理业务逻辑
     public class NotifyEventHandler implements EventHandler<NotifyEvent>, WorkHandler<NotifyEvent> {
-
         @Override
         public void onEvent(NotifyEvent notifyEvent, long l, boolean b) throws Exception {
             this.onEvent(notifyEvent);
             log.debug("接收任务 ==[{}]!", notifyEvent.getTarget());
-
         }
 
         @Override
@@ -85,7 +79,7 @@ public class DisruptorTaskScheduler {
         }
     }
 
-    //对Disruptor进行初始化
+    // 对Disruptor进行初始化
     public class TaskScheduler {
         private boolean isRunning = false;
         private Disruptor<NotifyEvent> disruptor;
@@ -104,24 +98,18 @@ public class DisruptorTaskScheduler {
 //                        ProducerType.SINGLE,
                         new BlockingWaitStrategy());
                 disruptor.setDefaultExceptionHandler(new NotifyEventHandlerException());
-
                 // 创建10个消费者来处理同一个生产者发的消息(这10个消费者不重复消费消息)
                 NotifyEventHandler[] consumers = new NotifyEventHandler[CONCURRENT_SIZE];
                 for (int i = 0; i < consumers.length; i++) {
                     consumers[i] = new NotifyEventHandler();
-
                 }
-//                顺序消息
-//                disruptor.handleEventsWith(consumers);
-                //并发消费
+                // disruptor.handleEventsWith(consumers);
+                // 并发消费
                 disruptor.handleEventsWithWorkerPool(consumers);
-
                 disruptor.start();
                 isRunning = true;
             }
-
         }
-
 
         public void sendNotify(Runnable target) {
             RingBuffer<NotifyEvent> ringBuffer = disruptor.getRingBuffer();
@@ -131,11 +119,8 @@ public class DisruptorTaskScheduler {
                     event.setTarget(target);
                 }
             }, target);
-
-            //lambda式写法，
+            // lambda式写法，
             // ringBuffer.publishEvent((event, sequence, data) -> event.setMessage(data), message);
         }
     }
-
-
 }

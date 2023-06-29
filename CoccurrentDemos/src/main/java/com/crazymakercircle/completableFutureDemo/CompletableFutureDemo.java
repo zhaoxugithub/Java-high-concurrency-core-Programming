@@ -267,14 +267,12 @@ public class CompletableFutureDemo {
     public void allOfDemo() throws Exception {
         CompletableFuture<Void> future1 =
                 CompletableFuture.runAsync(() -> Print.tco("模拟异步任务1"));
-
         CompletableFuture<Void> future2 =
                 CompletableFuture.runAsync(() -> Print.tco("模拟异步任务2"));
         CompletableFuture<Void> future3 =
                 CompletableFuture.runAsync(() -> Print.tco("模拟异步任务3"));
         CompletableFuture<Void> future4 =
                 CompletableFuture.runAsync(() -> Print.tco("模拟异步任务4"));
-
         CompletableFuture<Void> all =
                 CompletableFuture.allOf(future1, future2, future3, future4);
         all.join();

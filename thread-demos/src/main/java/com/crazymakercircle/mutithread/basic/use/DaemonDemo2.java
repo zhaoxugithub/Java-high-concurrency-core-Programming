@@ -14,7 +14,6 @@ public class DaemonDemo2 {
     public static final int SLEEP_GAP = 500;
     public static final int MAX_TURN = 5;
 
-
     static class NormalThread extends Thread {
         static int threadNo = 1;
 
@@ -27,13 +26,9 @@ public class DaemonDemo2 {
             for (int i = 0; ; i++) {
                 sleepMilliSeconds(SLEEP_GAP);
                 Print.synTco(getName() + ", 守护状态为:" + isDaemon());
-
             }
-
         }
-
     }
-
 
     public static void main(String args[]) throws InterruptedException {
         Thread daemonThread = new Thread(() ->
@@ -46,11 +41,8 @@ public class DaemonDemo2 {
         }, "daemonThread");
         daemonThread.setDaemon(true);
         daemonThread.start();
-        //这里，一定不能让main线程结束，否则看不到结果
-        sleepMilliSeconds(SLEEP_GAP);
-
+        // 这里，一定不能让main线程结束，否则看不到结果
+        sleepMilliSeconds(10000000);
         Print.synTco(getCurThreadName() + " 运行结束.");
     }
-
-
 }

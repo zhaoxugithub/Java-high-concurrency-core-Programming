@@ -9,6 +9,7 @@ import static com.crazymakercircle.util.ThreadUtil.sleepMilliSeconds;
  * Created by 尼恩@疯狂创客圈.
  */
 
+@SuppressWarnings("all")
 public class DaemonDemo {
     public static final int SLEEP_GAP = 500; //每一轮的睡眠时长
     public static final int MAX_TURN = 4; //用户线程执行轮次
