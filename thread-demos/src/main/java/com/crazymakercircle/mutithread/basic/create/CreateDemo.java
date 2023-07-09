@@ -19,6 +19,7 @@ public class CreateDemo {
             super("Mall-" + threadNo++);
         }
 
+        // cpu 时间片开始运行
         public void run() {
             for (int i = 1; i < MAX_TURN; i++) {
                 Print.cfo(getName() + ", 轮次：" + i);

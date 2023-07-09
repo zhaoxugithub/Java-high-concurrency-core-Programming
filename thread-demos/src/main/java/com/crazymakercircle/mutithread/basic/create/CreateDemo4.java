@@ -11,7 +11,6 @@ import static com.crazymakercircle.util.ThreadUtil.*;
  */
 
 public class CreateDemo4 {
-
     public static void main(String[] args) throws ExecutionException, InterruptedException {
         // 创建一个包含三个线程的线程池
         ExecutorService pool = Executors.newFixedThreadPool(3);
@@ -32,6 +31,7 @@ public class CreateDemo4 {
         Print.cfo("异步任务的执行结果为：" + result);
         sleepSeconds(Integer.MAX_VALUE);
     }
+
 
     static class DemoThread implements Runnable {
         @Override

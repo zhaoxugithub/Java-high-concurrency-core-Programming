@@ -11,7 +11,6 @@ import static com.crazymakercircle.util.ThreadUtil.getCurThreadName;
 public class CreateDemo2 {
     public static final int MAX_TURN = 5;
 
-
     static int threadNo = 1;
 
     static class RunTarget implements Runnable  //① 实现Runnable接口

@@ -10,10 +10,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 class SafeDataBuffer<T> {
     public static final int MAX_AMOUNT = 10;
     private List<T> dataList = new LinkedList<>();
-
     //保存数量
     private AtomicInteger amount = new AtomicInteger(0);
-
     /**
      * 向数据区增加一个元素
      */
@@ -25,7 +23,6 @@ class SafeDataBuffer<T> {
         dataList.add(element);
         Print.tcfo(element + "");
         amount.incrementAndGet();
-
         //如果数据不一致，抛出异常
         if (amount.get() != dataList.size()) {
             throw new Exception(amount + "!=" + dataList.size());

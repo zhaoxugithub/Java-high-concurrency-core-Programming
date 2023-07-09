@@ -118,8 +118,6 @@ public class Print {
         String nextLine = sc.nextLine();  //读取字符串型输入
         return nextLine;
     }
-
-
 }
 
 

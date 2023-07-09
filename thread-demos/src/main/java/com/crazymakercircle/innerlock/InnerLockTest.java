@@ -16,37 +16,37 @@ public class InnerLockTest {
     final int MAX_TURN = 1000;
     CountDownLatch latch = new CountDownLatch(MAX_TREAD);
 
-
     @org.junit.Test
     public void showNoLockObject() throws InterruptedException {
-        //输出JVM的信息
+        // 输出JVM的信息
         Print.fo(VM.current().details());
-        //创建一个对象
+        // 创建一个对象
         ObjectLock objectLock = new ObjectLock();
         Print.fo("object status: ");
-        //输出对象的布局信息
+        // 输出对象的布局信息
         objectLock.printSelf();
     }
 
-    static class  MyOrder{
+    static class MyOrder {
         private long orderId;
         private long userId;
         private byte state;
         private long createMillis;
     }
+
     @org.junit.Test
     public void showObjectStructSize() throws InterruptedException {
 
 
-        //输出JVM的信息
+        // 输出JVM的信息
         Print.fo(VM.current().details());
-        //创建一个对象
+        // 创建一个对象
         MyOrder objectLock = new MyOrder();
         Print.fo("object status: ");
-        //输出对象的布局信息
+        // 输出对象的布局信息
 
         String printable = ClassLayout.parseInstance(objectLock).toPrintable();
-        //输出对象布局
+        // 输出对象布局
         Print.fo("lock = " + printable);
     }
 
@@ -54,7 +54,7 @@ public class InnerLockTest {
     @org.junit.Test
     public void showBiasedLock() throws InterruptedException {
         Print.tcfo(VM.current().details());
-        //JVM延迟偏向锁
+        // JVM延迟偏向锁
         sleepMilliSeconds(5000);
 
         ObjectLock lock = new ObjectLock();
@@ -72,17 +72,17 @@ public class InnerLockTest {
                     if (i == MAX_TURN / 2) {
                         Print.tcfo("占有锁, lock 的状态: ");
                         lock.printObjectStruct();
-                        //读取字符串型输入,阻塞线程
+                        // 读取字符串型输入,阻塞线程
 //                        Print.consoleInput();
                     }
                 }
-                //每一次循环等待10ms
+                // 每一次循环等待10ms
                 sleepMilliSeconds(10);
             }
             latch.countDown();
         };
         new Thread(runnable, "biased-demo-thread").start();
-        //等待加锁线程执行完成
+        // 等待加锁线程执行完成
         latch.await();
         Print.tcfo("释放锁后, lock 的状态: ");
         lock.printObjectStruct();
@@ -94,7 +94,7 @@ public class InnerLockTest {
     public void showLightweightLock() throws InterruptedException {
 
         Print.tcfo(VM.current().details());
-        //JVM延迟偏向锁
+        // JVM延迟偏向锁
         sleepMilliSeconds(5000);
 
         ObjectLock lock = new ObjectLock();
@@ -114,22 +114,17 @@ public class InnerLockTest {
                         lock.printObjectStruct();
                     }
                 }
-
             }
-            //循环完毕
+            // 循环完毕
             latch.countDown();
-
-            //线程虽然释放锁，但是一直存在
+            // 线程虽然释放锁，但是一直存在
             for (int j = 0; ; j++) {
-                //每一次循环等待1ms
+                // 每一次循环等待1ms
                 sleepMilliSeconds(1);
             }
         };
         new Thread(runnable).start();
-
-
-        sleepMilliSeconds(1000); //等待1s
-
+        sleepMilliSeconds(1000); // 等待1s
         Runnable lightweightRunnable = () ->
         {
             for (int i = 0; i < MAX_TURN; i++) {
@@ -139,28 +134,26 @@ public class InnerLockTest {
                         Print.tcfo("第二个线程占有锁, lock 的状态: ");
                         lock.printObjectStruct();
                     }
-                    //每一次循环等待1ms
+                    // 每一次循环等待1ms
                     sleepMilliSeconds(1);
                 }
             }
-            //循环完毕
+            // 循环完毕
             latch.countDown();
         };
         new Thread(lightweightRunnable).start();
-        //等待加锁线程执行完成
+        // 等待加锁线程执行完成
         latch.await();
-        sleepMilliSeconds(2000);  //等待2s
+        sleepMilliSeconds(2000);  // 等待2s
         Print.tcfo("释放锁后, lock 的状态: ");
         lock.printObjectStruct();
-
-
     }
 
     @org.junit.Test
     public void showHeavyweightLock() throws InterruptedException {
 
         Print.tcfo(VM.current().details());
-        //JVM延迟偏向锁
+        // JVM延迟偏向锁
         sleepMilliSeconds(5000);
 
         ObjectLock counter = new ObjectLock();
@@ -182,19 +175,19 @@ public class InnerLockTest {
                 }
 
             }
-            //循环完毕
+            // 循环完毕
             latch.countDown();
 
-            //线程虽然释放锁，但是一直存在
+            // 线程虽然释放锁，但是一直存在
             for (int j = 0; ; j++) {
-                //每一次循环等待1ms
+                // 每一次循环等待1ms
                 sleepMilliSeconds(1);
             }
         };
         new Thread(runnable).start();
 
 
-        sleepMilliSeconds(1000); //等待2s
+        sleepMilliSeconds(1000); // 等待2s
 
         Runnable lightweightRunnable = () ->
         {
@@ -205,20 +198,20 @@ public class InnerLockTest {
                         Print.tcfo("占有锁, counter 的状态: ");
                         counter.printObjectStruct();
                     }
-                    //每一次循环等待10ms
+                    // 每一次循环等待10ms
                     sleepMilliSeconds(1);
                 }
             }
-            //循环完毕
+            // 循环完毕
             latch.countDown();
         };
         new Thread(lightweightRunnable, "抢锁线程1").start();
-        sleepMilliSeconds(100);  //等待2s
+        sleepMilliSeconds(100);  // 等待2s
         new Thread(lightweightRunnable, "抢锁线程2").start();
 
-        //等待加锁线程执行完成
+        // 等待加锁线程执行完成
         latch.await();
-        sleepMilliSeconds(2000);  //等待2s
+        sleepMilliSeconds(2000);  // 等待2s
         Print.tcfo("释放锁后, counter 的状态: ");
         counter.printObjectStruct();
     }

@@ -6,8 +6,6 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.crazymakercircle</groupId>
     <version>1.0-SNAPSHOT</version>
-
-
     <parent>
         <artifactId>Java-high-concurrency-core-Programming</artifactId>
         <groupId>com.crazymakercircle</groupId>
@@ -26,6 +24,20 @@
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>RELEASE</version>
+            <scope>compile</scope>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
