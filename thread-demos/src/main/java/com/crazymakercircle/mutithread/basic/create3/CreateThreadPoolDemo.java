@@ -86,10 +86,10 @@ public class CreateThreadPoolDemo {
     // 测试用例：“可调度线程池2”
     @Test
     public void testNewScheduledThreadPool2() {
-        ScheduledExecutorService scheduled = Executors.newScheduledThreadPool(0);
+        ScheduledExecutorService scheduled = Executors.newScheduledThreadPool(2);
         for (int i = 0; i < 2; i++) {
             scheduled.scheduleAtFixedRate(new TargetTask(),
-                    0, 500, TimeUnit.MILLISECONDS);
+                    0, 5000, TimeUnit.MILLISECONDS);
             // 以上的参数中：
             // 0表示首次执行任务的延迟时间，500表示每次执行任务的间隔时间
             // TimeUnit.MILLISECONDS所设置的时间的计时单位为毫秒

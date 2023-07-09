@@ -15,7 +15,5 @@ public class SafePlus {
     public Integer getAmount() {
         return amount;
     }
-
-
 }
 

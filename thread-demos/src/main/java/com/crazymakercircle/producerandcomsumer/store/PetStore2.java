@@ -12,7 +12,6 @@ import java.util.ArrayList;
 public class PetStore2 {
     public static final int CONSUME_GAP = 1000;
     public static final int PRODUCE_GAP = 1000;
-
     private static PetStore2 instance = new PetStore2();
 
     private PetStore2() {
@@ -22,9 +21,7 @@ public class PetStore2 {
         return instance;
     }
 
-
     private ArrayList<IGoods> goodsList = new ArrayList<IGoods>();
-
 
     public void consume() {
         Print.cfo("goodsList.size=" + goodsList.size());
@@ -40,49 +37,39 @@ public class PetStore2 {
 
     public void produce() {
         Print.cfo("goodsList.size=" + goodsList.size());
-
         IGoods goods = Goods.produceOne();
         goodsList.add(goods);
         Print.cfo(goods + "");
     }
 
     public static void main(String[] args) {
-
         Producer producer = new Producer();
         Consumer consumer = new Consumer();
         new Thread(producer).start();
         new Thread(consumer).start();
-
-
     }
 
 
     static class Producer implements Runnable {
         int turn = 0;
 
-
         @Override
         public void run() {
             while (true) {
                 ++turn;
                 try {
-
                     Thread.sleep(PRODUCE_GAP);
                     Print.hint(Thread.currentThread().getName() + "第" + turn + "轮生产！");
-
                     PetStore2.inst().produce();
-
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-
         }
     }
 
     static class Consumer implements Runnable {
         int turn = 0;
-
 
         @Override
         public void run() {
@@ -100,8 +87,5 @@ public class PetStore2 {
                 }
             }
         }
-
-
     }
-
 }
