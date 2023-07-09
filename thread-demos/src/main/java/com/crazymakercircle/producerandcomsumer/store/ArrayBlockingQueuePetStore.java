@@ -17,12 +17,12 @@ import java.util.concurrent.Executors;
  */
 public class ArrayBlockingQueuePetStore {
 
-    public static final int MAX_AMOUNT = 10; //数据区长度
+    public static final int MAX_AMOUNT = 10; // 数据区长度
 
 
-    //共享数据区，类定义
+    // 共享数据区，类定义
     static class DateBuffer<T> {
-        //保存数据
+        // 保存数据
         private ArrayBlockingQueue<T> dataList = new ArrayBlockingQueue<>(MAX_AMOUNT);
 
 
@@ -43,21 +43,20 @@ public class ArrayBlockingQueuePetStore {
     public static void main(String[] args) throws InterruptedException {
         Print.cfo("当前进程的ID是" + JvmUtil.getProcessID());
         System.setErr(System.out);
-        //共享数据区，实例对象
+        // 共享数据区，实例对象
         DateBuffer<IGoods> dateBuffer = new DateBuffer<>();
 
-        //生产者执行的动作
+        // 生产者执行的动作
         Callable<IGoods> produceAction = () ->
         {
-            //首先生成一个随机的商品
+            // 首先生成一个随机的商品
             IGoods goods = Goods.produceOne();
-            //将商品加上共享数据区
+            // 将商品加上共享数据区
             dateBuffer.add(goods);
             return goods;
         };
-        //消费者执行的动作
-        Callable<IGoods> consumerAction = () ->
-        {
+        // 消费者执行的动作
+        Callable<IGoods> consumerAction = () -> {
             // 从PetStore获取商品
             IGoods goods = null;
             goods = dateBuffer.fetch();
@@ -65,23 +64,19 @@ public class ArrayBlockingQueuePetStore {
         };
         // 同时并发执行的线程数
         final int THREAD_TOTAL = 20;
-        //线程池，用于多线程模拟测试
+        // 线程池，用于多线程模拟测试
         ExecutorService threadPool = Executors.newFixedThreadPool(THREAD_TOTAL);
-
-        //假定共11条线程，其中有10个消费者，但是只有1个生产者；
+        // 假定共11条线程，其中有10个消费者，但是只有1个生产者；
         final int CONSUMER_TOTAL = 11;
         final int PRODUCE_TOTAL = 1;
-
         for (int i = 0; i < PRODUCE_TOTAL; i++) {
-            //生产者线程每生产一个商品，间隔50ms
+            // 生产者线程每生产一个商品，间隔50ms
             threadPool.submit(new Producer(produceAction, 50));
         }
         for (int i = 0; i < CONSUMER_TOTAL; i++) {
-            //消费者线程每消费一个商品，间隔100ms
+            // 消费者线程每消费一个商品，间隔100ms
             threadPool.submit(new Consumer(consumerAction, 100));
         }
-
     }
-
 }
 

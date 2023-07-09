@@ -12,17 +12,13 @@ public class StatusDemo2 {
     public static final int SLEEP_GAP = 500 * 1000;
     public static final int MAX_TURN = 3;
 
-
     public static String getCurThreadName() {
         return Thread.currentThread().getName();
     }
 
-
     public static void main(String args[]) throws InterruptedException {
         Print.cfo("当前进程的ID是" + JvmUtil.getProcessID());
-
-
-        //一条RUNNABLE状态的线程,无限制运行
+        // 一条RUNNABLE状态的线程,无限制运行
         Thread runnableThread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -33,8 +29,7 @@ public class StatusDemo2 {
             }
         }, "runnableThread");
         runnableThread.start();
-
-        //演示一条WAITING状态的线程，调用join()实例方法
+        // 演示一条WAITING状态的线程，调用join()实例方法
         Thread waitingThread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -46,8 +41,5 @@ public class StatusDemo2 {
             }
         }, "waitingThread");
         waitingThread.start();
-
-
     }
-
 }

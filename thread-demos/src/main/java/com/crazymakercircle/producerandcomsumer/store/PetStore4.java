@@ -13,12 +13,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class PetStore4 {
     public static final int CONSUME_GAP = 1000;
     public static final int PRODUCE_GAP = 1000;
-
     private static PetStore4 instance = new PetStore4();
     private final int MAX_AMOUNT = 4;
     private AtomicInteger amount = new AtomicInteger(0);
     private ArrayList<IGoods> goodsList = new ArrayList<IGoods>();
-
 
     private PetStore4() {
     }
@@ -27,9 +25,7 @@ public class PetStore4 {
         return instance;
     }
 
-
     public void consume() {
-
         synchronized (this) {
             Print.cfo("goodsList.size=" + goodsList.size());
             IGoods goods = goodsList.get(0);
@@ -41,19 +37,14 @@ public class PetStore4 {
                     e.printStackTrace();
                 }
             }
-
             Print.cfo(goods + "");
             goodsList.remove(goods);
             amount.decrementAndGet();
             this.notify();
-
         }
-
     }
 
-
     public void produce() {
-
         synchronized (this) {
             while (amount.get() > MAX_AMOUNT) {
                 Print.cfo("队列已经满了！");
@@ -63,17 +54,12 @@ public class PetStore4 {
                     e.printStackTrace();
                 }
             }
-
             IGoods goods = Goods.produceOne();
             goodsList.add(goods);
-
             Print.cfo(goods + "");
             this.notify();
-
         }
-
     }
-
 
     static class Producer extends Thread {
         static int producerNo = 1;
@@ -86,17 +72,13 @@ public class PetStore4 {
         public void run() {
             while (true) {
                 Print.hint(super.getName() + "开始生产！");
-
                 PetStore4.inst().produce();
-
-
                 try {
                     Thread.sleep(PRODUCE_GAP);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-
         }
     }
 
@@ -114,7 +96,6 @@ public class PetStore4 {
                 try {
                     Thread.sleep(CONSUME_GAP);
                     PetStore4.inst().consume();
-
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } catch (IndexOutOfBoundsException e) {
@@ -123,18 +104,12 @@ public class PetStore4 {
                 }
             }
         }
-
-
     }
 
     public static void main(String[] args) {
-
         for (int i = 0; i < 5; i++) {
             new Producer().start();
             new Consumer().start();
         }
-
-
     }
-
 }

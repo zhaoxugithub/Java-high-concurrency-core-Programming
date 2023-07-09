@@ -11,7 +11,7 @@ import java.util.ArrayList;
  */
 public class PetStore {
     public static final int CONSUME_GAP = 1000;
-    public static final int PRODUCE_GAP = 1000;      //保存数据
+    public static final int PRODUCE_GAP = 1000;      // 保存数据
 
     private static PetStore instance = new PetStore();
 
@@ -22,9 +22,7 @@ public class PetStore {
         return instance;
     }
 
-
     private ArrayList<IGoods> goodsList = new ArrayList<IGoods>();
-
 
     public void consume() {
         Print.cfo("goodsList.size=" + goodsList.size());
@@ -44,14 +42,11 @@ public class PetStore {
     }
 
     public static void main(String[] args) {
-
         Producer producer = new Producer();
         Consumer consumer = new Consumer();
         producer.start();
         consumer.start();
-
     }
-
 
     static class Producer extends Thread {
         int turn = 0;
@@ -65,16 +60,13 @@ public class PetStore {
             while (true) {
                 ++turn;
                 try {
-
                     Thread.sleep(CONSUME_GAP);
                     Print.hint(super.getName() + "第" + turn + "轮生产！");
                     PetStore.inst().produce();
-
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-
         }
     }
 
@@ -101,8 +93,6 @@ public class PetStore {
                 }
             }
         }
-
-
     }
 }
 
