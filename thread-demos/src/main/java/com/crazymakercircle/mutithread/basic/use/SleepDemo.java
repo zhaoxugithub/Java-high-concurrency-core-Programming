@@ -13,8 +13,8 @@ import static com.crazymakercircle.util.ThreadUtil.getCurThreadName;
 
 public class SleepDemo {
 
-    public static final int SLEEP_GAP = 5000;//睡眠时长
-    public static final int MAX_TURN = 50;//睡眠次数
+    public static final int SLEEP_GAP = 5000;// 睡眠时长
+    public static final int MAX_TURN = 50;// 睡眠次数
 
     static class SleepThread extends Thread {
         static int threadSeqNumber = 1;
@@ -51,10 +51,10 @@ public class SleepDemo {
 
     @Test
     public void sleepForever() {
-        //获取进程id，避免去任务管理器查找
+        // 获取进程id，避免去任务管理器查找
         Logger.cfo("进程ID=" + getProcessID());
         try {
-            //main线程，无限制等待
+            // main线程，无限制等待
             Thread.sleep(Integer.MAX_VALUE);
         } catch (InterruptedException e) {
             e.printStackTrace();

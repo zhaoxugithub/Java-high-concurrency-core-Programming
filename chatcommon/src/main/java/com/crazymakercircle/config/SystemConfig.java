@@ -15,7 +15,6 @@ public class SystemConfig extends ConfigProperties {
         super(fileName);
         super.loadFromFile();
     }
-
     // 服务器ip
     public static final String SOCKET_SERVER_IP
             = singleton.getValue("socket.server.ip");

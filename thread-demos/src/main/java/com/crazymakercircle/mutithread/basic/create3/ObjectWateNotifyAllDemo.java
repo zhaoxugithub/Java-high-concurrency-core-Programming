@@ -20,7 +20,6 @@ public class ObjectWateNotifyAllDemo {
         }
 
         public void run() {
-
             Print.tcfo("争夺监视锁");
             synchronized (locko) {
                 Print.tcfo("争夺监视锁成功,等待被唤醒");

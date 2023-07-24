@@ -65,7 +65,6 @@ public class ThreadPoolDemo {
                     Print.cfo(getCurThreadName() + " 运行结束.");
                 }
             });
-
         }
         ThreadUtil.sleepMilliSeconds(Integer.MAX_VALUE);
     }
@@ -80,12 +79,11 @@ public class ThreadPoolDemo {
             try {
                 sleepMilliSeconds(10);
                 pool.submit(new TargetTask());
-
             } catch (RejectedExecutionException e) {
                 e.printStackTrace();
             }
         }
-        //等待10s
+        // 等待10s
         sleepSeconds(10);
         Print.tco("关闭线程池");
     }

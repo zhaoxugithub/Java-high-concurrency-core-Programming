@@ -102,7 +102,7 @@ public class CreateThreadPoolDemo {
     @Test
     public void testThreadPoolExecutor() {
         ThreadPoolExecutor executor = new ThreadPoolExecutor(
-                1, // corePoolSize
+                3, // corePoolSize
                 100, // maximumPoolSize
                 100, // keepAliveTime
                 TimeUnit.SECONDS, // unit
@@ -113,7 +113,7 @@ public class CreateThreadPoolDemo {
             {
                 Print.tco("taskIndex = " + taskIndex);
                 try {
-                    Thread.sleep(Long.MAX_VALUE);
+                    Thread.sleep(3000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -219,8 +219,6 @@ public class CreateThreadPoolDemo {
                 START_TIME.set(System.currentTimeMillis());
                 super.beforeExecute(t, target);
             }
-
-
             @Override
             protected void afterExecute(Runnable target, Throwable t) {
                 super.afterExecute(target, t);
@@ -231,10 +229,7 @@ public class CreateThreadPoolDemo {
                 START_TIME.remove();
             }
         };
-
-
         pool.execute(new TargetTask());
-
         // 等待10秒
         sleepSeconds(10);
         Print.tco("关闭线程池");
