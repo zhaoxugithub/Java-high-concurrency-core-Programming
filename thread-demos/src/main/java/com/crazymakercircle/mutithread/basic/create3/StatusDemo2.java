@@ -8,12 +8,12 @@ import com.crazymakercircle.util.Print;
  */
 
 public class StatusDemo2 {
-
     public static final int SLEEP_GAP = 500 * 1000;
     public static final int MAX_TURN = 3;
 
     public static String getCurThreadName() {
-        return Thread.currentThread().getName();
+        return Thread.currentThread()
+                     .getName();
     }
 
     public static void main(String args[]) throws InterruptedException {

@@ -8,11 +8,7 @@ import org.apache.commons.lang.StringUtils;
 public class ChatMsg {
     // 消息类型  1：纯文本  2：音频 3：视频 4：地理位置 5：其他
     public enum MSGTYPE {
-        TEXT,
-        AUDIO,
-        VIDEO,
-        POS,
-        OTHER;
+        TEXT, AUDIO, VIDEO, POS, OTHER;
     }
 
     public ChatMsg(User user) {

@@ -10,7 +10,7 @@ public final class Cell {
         value = x;
     }
 
-    final boolean cas(long cmp, long val) {
+    boolean cas(long cmp, long val) {
         return UNSAFE.compareAndSwapLong(this, valueOffset, cmp, val);
     }
 
@@ -26,5 +26,4 @@ public final class Cell {
             throw new RuntimeException(e);
         }
     }
-
 }

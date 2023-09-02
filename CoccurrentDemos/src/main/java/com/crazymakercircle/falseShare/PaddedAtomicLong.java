@@ -4,7 +4,6 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class PaddedAtomicLong extends AtomicLong {
     private static final long serialVersionUID = -3415778863941386253L;
-
     /**
      * Padded 6 long (48 bytes)
      */

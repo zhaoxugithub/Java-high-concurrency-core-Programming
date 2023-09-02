@@ -15,8 +15,7 @@ public class SafePlus {
     public static final int MAX_TURN = 1000000;
 
     static class NotSafeCounter implements Runnable {
-        public AtomicInteger amount =
-                new AtomicInteger(0);
+        public AtomicInteger amount = new AtomicInteger(0);
 
         public void increase() {
             amount.incrementAndGet();
@@ -33,7 +32,6 @@ public class SafePlus {
     }
 
     public static void main(String[] args) throws InterruptedException {
-
         NotSafeCounter counter = new NotSafeCounter();
         for (int i = 0; i < 10; i++) {
             Thread thread = new Thread(counter);

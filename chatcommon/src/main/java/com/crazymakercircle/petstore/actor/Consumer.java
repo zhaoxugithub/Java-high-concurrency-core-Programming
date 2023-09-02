@@ -13,33 +13,26 @@ import static com.crazymakercircle.util.ThreadUtil.sleepMilliSeconds;
  */
 public class Consumer implements Runnable {
 
-    //消费的时间间隔，默认等待100毫秒
+    // 消费的时间间隔，默认等待100毫秒
     public static final int CONSUME_GAP = 100;
-
-
-    //消费总次数
+    // 消费总次数
     // 注意：
     // 不是单个消费者的次数
     // 是所有消费者的总的消费次数
     static final AtomicInteger TURN = new AtomicInteger(0);
-
-    //消费者对象编号
+    // 消费者对象编号
     static final AtomicInteger CONSUMER_NO = new AtomicInteger(1);
-
-    //消费者名称
+    // 消费者名称
     String name;
-
-    //消费的动作
+    // 消费的动作
     Callable action = null;
-
-    //消费一次等待的时间，默认为1000ms
+    // 消费一次等待的时间，默认为1000ms
     int gap = CONSUME_GAP;
 
     public Consumer(Callable action, int gap) {
         this.action = action;
         this.gap = gap;
         name = "消费者-" + CONSUMER_NO.incrementAndGet();
-
     }
 
     public Consumer(Callable action) {
@@ -52,15 +45,15 @@ public class Consumer implements Runnable {
     @Override
     public void run() {
         while (true) {
-            //增加消费次数
+            // 增加消费次数
             TURN.incrementAndGet();
             try {
-                //执行消费动作
+                // 执行消费动作
                 Object out = action.call();
                 if (null != out) {
                     Print.tcfo("第" + TURN.get() + "轮消费：" + out);
                 }
-                //每一轮消费之后，稍微等待一下
+                // 每一轮消费之后，稍微等待一下
                 sleepMilliSeconds(gap);
             } catch (Exception e) {
                 e.printStackTrace();

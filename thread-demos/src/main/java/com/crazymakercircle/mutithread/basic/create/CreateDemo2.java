@@ -10,7 +10,6 @@ import static com.crazymakercircle.util.ThreadUtil.getCurThreadName;
 
 public class CreateDemo2 {
     public static final int MAX_TURN = 5;
-
     static int threadNo = 1;
 
     static class RunTarget implements Runnable  //① 实现Runnable接口
@@ -28,7 +27,7 @@ public class CreateDemo2 {
     public static void main(String args[]) throws InterruptedException {
         Thread thread = null;
 
-        //方法2.1：使用实现Runnable的实现类创建和启动线程
+        // 方法2.1：使用实现Runnable的实现类创建和启动线程
 
         for (int i = 0; i < 2; i++) {
             Runnable target = new RunTarget();
@@ -36,7 +35,7 @@ public class CreateDemo2 {
             thread.start();
         }
 
-        //方法2.2：使用实现Runnable的匿名类创建和启动线程
+        // 方法2.2：使用实现Runnable的匿名类创建和启动线程
 
         for (int i = 0; i < 2; i++) {
             thread = new Thread(new Runnable() {
@@ -50,10 +49,9 @@ public class CreateDemo2 {
             }, "RunnableThread" + threadNo++);
             thread.start();
         }
-        //方法2.3：使用实现lambor表达式创建和启动线程
+        // 方法2.3：使用实现lambor表达式创建和启动线程
         for (int i = 0; i < 2; i++) {
-            thread = new Thread(() ->
-            {
+            thread = new Thread(() -> {
                 for (int j = 1; j < MAX_TURN; j++) {
                     Print.cfo(getCurThreadName() + ", 轮次：" + j);
                 }

@@ -7,7 +7,6 @@ import com.lmax.disruptor.EventHandler;
  * disruptor会回调此处理器的方法
  */
 class LongEventHandlerWithName implements EventHandler<LongEvent> {
-
     String name;
 
     public LongEventHandlerWithName(String name) {

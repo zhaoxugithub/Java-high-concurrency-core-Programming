@@ -10,7 +10,6 @@ import static com.crazymakercircle.util.ThreadUtil.getCurThreadName;
  */
 
 public class CreateDemo {
-
     public static final int MAX_TURN = 5;
     static int threadNo = 1;
 
@@ -30,7 +29,8 @@ public class CreateDemo {
 
     @Test
     public void test() {
-        int process = Runtime.getRuntime().availableProcessors();
+        int process = Runtime.getRuntime()
+                             .availableProcessors();
         System.out.println(process);
     }
 

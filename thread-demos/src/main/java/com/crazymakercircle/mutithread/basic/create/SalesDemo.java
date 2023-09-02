@@ -41,8 +41,7 @@ public class SalesDemo {
         public void run() {
             for (int i = 0; i <= MAX_AMOUNT; i++) {
                 if (this.goodsAmount.get() > 0) {
-                    Print.cfo(getCurThreadName() + " 卖出一件，还剩："
-                            + (goodsAmount.decrementAndGet()));
+                    Print.cfo(getCurThreadName() + " 卖出一件，还剩：" + (goodsAmount.decrementAndGet()));
                     sleepMilliSeconds(10);
                 }
             }

@@ -11,8 +11,7 @@ public class Goods implements IGoods {
     protected String goodName;
     protected int amount;
     protected IGoods.Type goodType;
-    private static int goodNo;  //商品对象累加编号
-
+    private static int goodNo;  // 商品对象累加编号
 
     protected Goods() {
         this.id = ++goodNo;
@@ -51,11 +50,7 @@ public class Goods implements IGoods {
 
     @Override
     public String toString() {
-        return "商品{" +
-                "ID=" + getID() +
-                ",名称=" + getName() +
-                ",价格=" + getPrice() +
-                "}";
+        return "商品{" + "ID=" + getID() + ",名称=" + getName() + ",价格=" + getPrice() + "}";
     }
 
     @Override
@@ -127,9 +122,7 @@ public class Goods implements IGoods {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Goods goods = (Goods) o;
-
         return id == goods.id;
     }
 
@@ -138,15 +131,13 @@ public class Goods implements IGoods {
         return id;
     }
 
-
     public int compareTo(IGoods o) {
         if (o == null) throw new NullPointerException("Good object is null");
         return this.id - o.getID();
     }
 
-
     private static class GoodsPet extends Goods {
-        private final static AtomicInteger PET_NO = new AtomicInteger(0);  //编号
+        private final static AtomicInteger PET_NO = new AtomicInteger(0);  // 编号
 
         public GoodsPet() {
             super();
@@ -158,7 +149,7 @@ public class Goods implements IGoods {
     }
 
     private static class GoodsClothes extends Goods {
-        private final static AtomicInteger CLOTHES_NO = new AtomicInteger(0);  //编号
+        private final static AtomicInteger CLOTHES_NO = new AtomicInteger(0);  // 编号
 
         public GoodsClothes() {
             super();
@@ -170,7 +161,7 @@ public class Goods implements IGoods {
     }
 
     private static class GoodsFood extends Goods {
-        private final static AtomicInteger FOOD_NO = new AtomicInteger(0);  //编号
+        private final static AtomicInteger FOOD_NO = new AtomicInteger(0);  // 编号
 
         public GoodsFood() {
             super();

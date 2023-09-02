@@ -14,13 +14,11 @@ import java.util.concurrent.ConcurrentSkipListSet;
  * @author skywang
  */
 public class ConcurrentSkipListSetDemo1 {
-
     // set是TreeSet对象时，程序会出错。
-    //private static Set<String> set = new TreeSet<String>();
+    // private static Set<String> set = new TreeSet<String>();
     private static Set<String> set = new ConcurrentSkipListSet<String>();
 
     public static void main(String[] args) {
-
         // 同时启动两个线程对set进行操作！
         new MyThread("a").start();
         new MyThread("b").start();
@@ -46,7 +44,8 @@ public class ConcurrentSkipListSetDemo1 {
             int i = 0;
             while (i++ < 10) {
                 // “线程名” + "序号"
-                String val = Thread.currentThread().getName() + (i % 6);
+                String val = Thread.currentThread()
+                                   .getName() + (i % 6);
                 set.add(val);
                 // 通过“Iterator”遍历set。
                 printAll();

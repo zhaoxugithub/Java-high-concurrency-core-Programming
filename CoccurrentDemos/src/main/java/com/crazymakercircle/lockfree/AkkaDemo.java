@@ -14,7 +14,7 @@ import java.io.Serializable;
 
 @Slf4j
 public class AkkaDemo {
-    //创建命令对象
+    // 创建命令对象
     @Data
     @AllArgsConstructor
     static class Command implements Serializable {
@@ -22,9 +22,8 @@ public class AkkaDemo {
         private String data;
     }
 
-    //创建Actor对象
+    // 创建Actor对象
     static class SimpleActor extends UntypedActor {
-
         LoggingAdapter log = Logging.getLogger(getContext().system(), this);
 
         public SimpleActor() {
@@ -38,7 +37,6 @@ public class AkkaDemo {
             if (msg instanceof Command) {
                 final String data = ((Command) msg).getData();
                 // emmit an event somewhere...
-
             } else if (msg.equals("echo")) {
                 log.info("ECHO!");
             }
@@ -46,24 +44,16 @@ public class AkkaDemo {
     }
 
     public static void main(String[] args) throws InterruptedException {
-
         final ActorSystem actorSystem = ActorSystem.create("actor-system");
-
         Thread.sleep(5000);
-
         final ActorRef actorRef = actorSystem.actorOf(Props.create(SimpleActor.class), "simple-actor");
-
         actorRef.tell(new Command("CMD 1"), null);
         actorRef.tell(new Command("CMD 2"), null);
         actorRef.tell(new Command("CMD 3"), null);
         actorRef.tell(new Command("CMD 4"), null);
         actorRef.tell(new Command("CMD 5"), null);
-
         Thread.sleep(5000);
-
         log.debug("Actor System Shutdown Starting...");
-
         actorSystem.shutdown();
-
     }
 }

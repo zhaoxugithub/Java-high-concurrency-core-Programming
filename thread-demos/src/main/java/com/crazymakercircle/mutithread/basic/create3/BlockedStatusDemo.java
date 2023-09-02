@@ -19,6 +19,7 @@ public class BlockedStatusDemo {
             super("blockedThread-" + threadNO);
             threadNO++;
         }
+
         public void run() {
             Print.tcfo("等待获取locko的监视锁");
             synchronized (locko) {
@@ -33,7 +34,6 @@ public class BlockedStatusDemo {
             @Override
             public void run() {
                 Print.tcfo("等待locko的获取监视锁");
-
                 synchronized (locko) {
                     Print.tcfo("获取locko的监视锁成功");
                     for (; ; ) {

@@ -11,7 +11,8 @@ public class WaitingStatusDemo {
     public static final int MAX_TURN = 3;
 
     public static String getCurThreadName() {
-        return Thread.currentThread().getName();
+        return Thread.currentThread()
+                     .getName();
     }
 
     public static void main(String args[]) throws InterruptedException {
@@ -39,7 +40,6 @@ public class WaitingStatusDemo {
             }
         }, "runnableThread");
         runnableThread.start();
-
         // 演示一条WAITING状态的线程，调用sleep(long)实例方法
         Thread waitingThread = new Thread(new Runnable() {
             @Override

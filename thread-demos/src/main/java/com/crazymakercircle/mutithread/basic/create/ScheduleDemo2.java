@@ -9,7 +9,6 @@ import static com.crazymakercircle.util.ThreadUtil.getCurThreadName;
  */
 
 public class ScheduleDemo2 {
-
     public static final int MAX_TURN = 50;
 
     public static Thread getCurThread() {
@@ -17,7 +16,8 @@ public class ScheduleDemo2 {
     }
 
     public static int getCurPriority() {
-        return Thread.currentThread().getPriority();
+        return Thread.currentThread()
+                     .getPriority();
     }
 
     static int threadNo = 1;

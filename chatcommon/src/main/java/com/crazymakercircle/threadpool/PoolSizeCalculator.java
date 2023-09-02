@@ -71,7 +71,8 @@ public abstract class PoolSizeCalculator {
         long mem = calculateMemoryUsage();
         BigDecimal queueCapacity = targetQueueSizeBytes.divide(new BigDecimal(mem), RoundingMode.HALF_UP);
         System.out.println("Target queue memory usage (bytes): " + targetQueueSizeBytes);
-        System.out.println("createTask() produced " + createTask().getClass().getName() + " which took " + mem + " bytes in a queue");
+        System.out.println("createTask() produced " + createTask().getClass()
+                                                                  .getName() + " which took " + mem + " bytes in a queue");
         System.out.println("Formula: " + targetQueueSizeBytes + " / " + mem);
         System.out.println("* Recommended queue capacity (bytes): " + queueCapacity);
     }
@@ -82,8 +83,10 @@ public abstract class PoolSizeCalculator {
     private void calculateOptimalThreadCount(long cpu, long wait, BigDecimal targetUtilization) {
         BigDecimal waitTime = new BigDecimal(wait);
         BigDecimal computeTime = new BigDecimal(cpu);
-        BigDecimal numberOfCPU = new BigDecimal(Runtime.getRuntime().availableProcessors());
-        BigDecimal optimalthreadcount = numberOfCPU.multiply(targetUtilization).multiply(new BigDecimal(1).add(waitTime.divide(computeTime, RoundingMode.HALF_UP)));
+        BigDecimal numberOfCPU = new BigDecimal(Runtime.getRuntime()
+                                                       .availableProcessors());
+        BigDecimal optimalthreadcount = numberOfCPU.multiply(targetUtilization)
+                                                   .multiply(new BigDecimal(1).add(waitTime.divide(computeTime, RoundingMode.HALF_UP)));
         System.out.println("Number of CPU: " + numberOfCPU);
         System.out.println("Target utilization: " + targetUtilization);
         System.out.println("Elapsed time (nanos): " + (testtime * 1000000));
@@ -126,7 +129,8 @@ public abstract class PoolSizeCalculator {
             try {
                 Thread.sleep(10);
             } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
+                Thread.currentThread()
+                      .interrupt();
                 break;
             }
         }
@@ -145,21 +149,25 @@ public abstract class PoolSizeCalculator {
         for (int i = 0; i < SAMPLE_QUEUE_SIZE; i++) {
             queue.add(createTask());
         }
-        long mem0 = Runtime.getRuntime().totalMemory()
-                - Runtime.getRuntime().freeMemory();
-        long mem1 = Runtime.getRuntime().totalMemory()
-                - Runtime.getRuntime().freeMemory();
+        long mem0 = Runtime.getRuntime()
+                           .totalMemory() - Runtime.getRuntime()
+                                                   .freeMemory();
+        long mem1 = Runtime.getRuntime()
+                           .totalMemory() - Runtime.getRuntime()
+                                                   .freeMemory();
         queue = null;
         collectGarbage(15);
-        mem0 = Runtime.getRuntime().totalMemory()
-                - Runtime.getRuntime().freeMemory();
+        mem0 = Runtime.getRuntime()
+                      .totalMemory() - Runtime.getRuntime()
+                                              .freeMemory();
         queue = createWorkQueue();
         for (int i = 0; i < SAMPLE_QUEUE_SIZE; i++) {
             queue.add(createTask());
         }
         collectGarbage(15);
-        mem1 = Runtime.getRuntime().totalMemory()
-                - Runtime.getRuntime().freeMemory();
+        mem1 = Runtime.getRuntime()
+                      .totalMemory() - Runtime.getRuntime()
+                                              .freeMemory();
         return (mem1 - mem0) / SAMPLE_QUEUE_SIZE;
     }
 

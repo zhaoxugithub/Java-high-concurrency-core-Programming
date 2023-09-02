@@ -9,20 +9,16 @@ import static com.crazymakercircle.util.ThreadUtil.*;
 /**
  * Created by 尼恩@疯狂创客圈.
  */
-
 public class CreateDemo4 {
     public static void main(String[] args) throws ExecutionException, InterruptedException {
         // 创建一个包含三个线程的线程池
         ExecutorService pool = Executors.newFixedThreadPool(3);
         pool.execute(new DemoThread()); // 执行线程实例
         // 执行Runnable执行目标实例
-        pool.execute(new Runnable() {
-            @Override
-            public void run() {
-                for (int j = 1; j < MAX_TURN; j++) {
-                    Print.cfo(getCurThreadName() + ", 轮次：" + j);
-                    sleepMilliSeconds(10);
-                }
+        pool.execute(() -> {
+            for (int j = 1; j < MAX_TURN; j++) {
+                Print.cfo(getCurThreadName() + ", 轮次：" + j);
+                sleepMilliSeconds(10);
             }
         });
         // 提交Callable 执行目标实例
@@ -31,7 +27,6 @@ public class CreateDemo4 {
         Print.cfo("异步任务的执行结果为：" + result);
         sleepSeconds(Integer.MAX_VALUE);
     }
-
 
     static class DemoThread implements Runnable {
         @Override

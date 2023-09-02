@@ -61,13 +61,7 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "User{" +
-                "uid='" + getUid() + '\'' +
-                ", nickName='" + getNickName() + '\'' +
-                ", age=" + age +
-                ", platform=" + getPlatform() +
-                ", intPlatFrom=" + getIntPlatFrom() +
-                '}';
+        return "User{" + "uid='" + getUid() + '\'' + ", nickName='" + getNickName() + '\'' + ", age=" + age + ", platform=" + getPlatform() + ", intPlatFrom=" + getIntPlatFrom() + '}';
     }
 
     public static User fromMsg(ProtoMsg.LoginRequest info) {

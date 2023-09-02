@@ -16,7 +16,8 @@ public class ScheduleDemo {
     }
 
     public static int getCurPriority() {
-        return Thread.currentThread().getPriority();
+        return Thread.currentThread()
+                     .getPriority();
     }
 
     static int threadNo = 1;
@@ -25,6 +26,7 @@ public class ScheduleDemo {
         public DemoThread() {
             super("Mall-" + threadNo++);
         }
+
         public void run() {
             long startTime = System.currentTimeMillis();
             for (int j = 1; j < MAX_TURN; j++) {

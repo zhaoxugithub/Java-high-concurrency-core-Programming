@@ -19,7 +19,8 @@ public class InnerLockTest {
     @org.junit.Test
     public void showNoLockObject() throws InterruptedException {
         // 输出JVM的信息
-        Print.fo(VM.current().details());
+        Print.fo(VM.current()
+                   .details());
         // 创建一个对象
         ObjectLock objectLock = new ObjectLock();
         Print.fo("object status: ");
@@ -39,13 +40,15 @@ public class InnerLockTest {
 
 
         // 输出JVM的信息
-        Print.fo(VM.current().details());
+        Print.fo(VM.current()
+                   .details());
         // 创建一个对象
         MyOrder objectLock = new MyOrder();
         Print.fo("object status: ");
         // 输出对象的布局信息
 
-        String printable = ClassLayout.parseInstance(objectLock).toPrintable();
+        String printable = ClassLayout.parseInstance(objectLock)
+                                      .toPrintable();
         // 输出对象布局
         Print.fo("lock = " + printable);
     }
@@ -53,19 +56,16 @@ public class InnerLockTest {
 
     @org.junit.Test
     public void showBiasedLock() throws InterruptedException {
-        Print.tcfo(VM.current().details());
+        Print.tcfo(VM.current()
+                     .details());
         // JVM延迟偏向锁
         sleepMilliSeconds(5000);
-
         ObjectLock lock = new ObjectLock();
-
         Print.tcfo("抢占锁前, lock 的状态: ");
         lock.printObjectStruct();
-
         sleepMilliSeconds(5000);
         CountDownLatch latch = new CountDownLatch(1);
-        Runnable runnable = () ->
-        {
+        Runnable runnable = () -> {
             for (int i = 0; i < MAX_TURN; i++) {
                 synchronized (lock) {
                     lock.increase();
@@ -86,26 +86,21 @@ public class InnerLockTest {
         latch.await();
         Print.tcfo("释放锁后, lock 的状态: ");
         lock.printObjectStruct();
-
-
     }
 
     @org.junit.Test
     public void showLightweightLock() throws InterruptedException {
-
-        Print.tcfo(VM.current().details());
+        Print.tcfo(VM.current()
+                     .details());
         // JVM延迟偏向锁
         sleepMilliSeconds(5000);
-
         ObjectLock lock = new ObjectLock();
 
         Print.tcfo("抢占锁前, lock 的状态: ");
         lock.printObjectStruct();
-
         sleepMilliSeconds(5000);
         CountDownLatch latch = new CountDownLatch(2);
-        Runnable runnable = () ->
-        {
+        Runnable runnable = () -> {
             for (int i = 0; i < MAX_TURN; i++) {
                 synchronized (lock) {
                     lock.increase();
@@ -125,8 +120,7 @@ public class InnerLockTest {
         };
         new Thread(runnable).start();
         sleepMilliSeconds(1000); // 等待1s
-        Runnable lightweightRunnable = () ->
-        {
+        Runnable lightweightRunnable = () -> {
             for (int i = 0; i < MAX_TURN; i++) {
                 synchronized (lock) {
                     lock.increase();
@@ -152,7 +146,8 @@ public class InnerLockTest {
     @org.junit.Test
     public void showHeavyweightLock() throws InterruptedException {
 
-        Print.tcfo(VM.current().details());
+        Print.tcfo(VM.current()
+                     .details());
         // JVM延迟偏向锁
         sleepMilliSeconds(5000);
 
@@ -163,8 +158,7 @@ public class InnerLockTest {
 
         sleepMilliSeconds(5000);
         CountDownLatch latch = new CountDownLatch(3);
-        Runnable runnable = () ->
-        {
+        Runnable runnable = () -> {
             for (int i = 0; i < MAX_TURN; i++) {
                 synchronized (counter) {
                     counter.increase();
@@ -189,8 +183,7 @@ public class InnerLockTest {
 
         sleepMilliSeconds(1000); // 等待2s
 
-        Runnable lightweightRunnable = () ->
-        {
+        Runnable lightweightRunnable = () -> {
             for (int i = 0; i < MAX_TURN; i++) {
                 synchronized (counter) {
                     counter.increase();

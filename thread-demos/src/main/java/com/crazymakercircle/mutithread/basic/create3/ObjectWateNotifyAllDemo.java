@@ -30,7 +30,6 @@ public class ObjectWateNotifyAllDemo {
                 }
                 Print.tcfo("收到通知，开始执行死循环");
                 for (; ; ) {
-
                 }
             }
         }
@@ -47,7 +46,6 @@ public class ObjectWateNotifyAllDemo {
             @Override
             public void run() {
                 Print.tcfo("争夺监视锁");
-
                 synchronized (locko) {
                     Print.tcfo("争夺监视锁成功");
                     Print.tcfo("通知一条等待线程");

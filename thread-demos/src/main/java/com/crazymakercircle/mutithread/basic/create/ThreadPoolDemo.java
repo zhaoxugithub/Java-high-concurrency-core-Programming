@@ -18,18 +18,14 @@ import static com.crazymakercircle.util.ThreadUtil.*;
 
 public class ThreadPoolDemo {
     public static final int MAX_TURN = 5;
-
-
     static int threadNo = 1;
 
-    static class RunTarget implements Runnable  //① 实现Runnable接口
-    {
+    static class RunTarget implements Runnable {
         public void run()  //② 在这些写业务逻辑
         {
             for (int j = 1; j < MAX_TURN; j++) {
                 Print.cfo(getCurThreadName() + ", 轮次：" + j);
             }
-
             Print.cfo(getCurThreadName() + " 运行结束.");
         }
     }
@@ -38,16 +34,12 @@ public class ThreadPoolDemo {
     public void testIoIntenseTargetThreadPool() {
         ThreadPoolExecutor pool = ThreadUtil.getIoIntenseTargetThreadPool();
         for (int i = 0; i < 2; i++) {
-            pool.submit(new Runnable() {
-                @Override
-                public void run() {
-                    for (int j = 1; j < MAX_TURN; j++) {
-                        Print.cfo(getCurThreadName() + ", 轮次：" + j);
-                    }
-                    Print.cfo(getCurThreadName() + " 运行结束.");
+            pool.submit(() -> {
+                for (int j = 1; j < MAX_TURN; j++) {
+                    Print.cfo(getCurThreadName() + ", 轮次：" + j);
                 }
+                Print.cfo(getCurThreadName() + " 运行结束.");
             });
-
         }
         ThreadUtil.sleepMilliSeconds(Integer.MAX_VALUE);
     }
@@ -56,14 +48,11 @@ public class ThreadPoolDemo {
     public void testCpuIntenseTargetThreadPool() {
         ThreadPoolExecutor pool = ThreadUtil.getCpuIntenseTargetThreadPool();
         for (int i = 0; i < 2; i++) {
-            pool.submit(new Runnable() {
-                @Override
-                public void run() {
-                    for (int j = 1; j < MAX_TURN; j++) {
-                        Print.cfo(getCurThreadName() + ", 轮次：" + j);
-                    }
-                    Print.cfo(getCurThreadName() + " 运行结束.");
+            pool.submit(() -> {
+                for (int j = 1; j < MAX_TURN; j++) {
+                    Print.cfo(getCurThreadName() + ", 轮次：" + j);
                 }
+                Print.cfo(getCurThreadName() + " 运行结束.");
             });
         }
         ThreadUtil.sleepMilliSeconds(Integer.MAX_VALUE);
@@ -71,10 +60,10 @@ public class ThreadPoolDemo {
 
     @Test
     public void testMixedThreadPool() {
-        System.getProperties().setProperty(MIXED_THREAD_AMOUNT, "80");
+        System.getProperties()
+              .setProperty(MIXED_THREAD_AMOUNT, "80");
         // 获取自定义的混合线程池
-        ExecutorService pool =
-                ThreadUtil.getMixedTargetThreadPool();
+        ExecutorService pool = ThreadUtil.getMixedTargetThreadPool();
         for (int i = 0; i < 1000; i++) {
             try {
                 sleepMilliSeconds(10);

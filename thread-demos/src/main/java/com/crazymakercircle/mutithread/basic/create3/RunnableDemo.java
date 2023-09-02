@@ -15,7 +15,6 @@ public class RunnableDemo {
     static int turn = 0;
 
     static class RunnableThread extends Thread {
-
         public RunnableThread() {
             super("runnableThread");
         }
@@ -25,37 +24,21 @@ public class RunnableDemo {
             Print.cfo(getName() + ", 状态为" + getState());
 
             for (; turn < MAX_TURN; turn++) {
-                Print.cfo(getName() +
-                        "- turn -" + turn +
-                        "- 状态为" + getState());
+                Print.cfo(getName() + "- turn -" + turn + "- 状态为" + getState());
             }
-
             Print.cfo(getName() + "- 运行结束.");
-
         }
-
     }
 
     public static void main(String args[]) throws InterruptedException {
-
-
         Thread sThread = new RunnableThread();
         Print.cfo(sThread.getName() + "- 状态为" + sThread.getState());
-
         sThread.start();
-
         for (; turn < MAX_TURN; turn++) {
-            Print.cfo(sThread.getName() +
-                    "- turn -" + turn +
-                    "- 状态为" + sThread.getState());
+            Print.cfo(sThread.getName() + "- turn -" + turn + "- 状态为" + sThread.getState());
         }
-
-
         Thread.sleep(SLEEP_GAP);
         Print.cfo(sThread.getName() + "- 状态为" + sThread.getState());
-
         Print.cfo(getCurThreadName() + "- 运行结束.");
     }
-
-
 }

@@ -30,7 +30,6 @@ public class NotSafePlus {
     }
 
     public static void main(String[] args) throws InterruptedException {
-
         NotSafeCounter counter = new NotSafeCounter();
         for (int i = 0; i < 10; i++) {
             Thread thread = new Thread(counter);

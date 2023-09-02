@@ -16,7 +16,6 @@ import static com.crazymakercircle.util.ThreadUtil.sleepSeconds;
  */
 
 public class CreateThreadPoolDemo {
-
     public static final int MAX_TURN = 5;
 
     // 异步的执行目标类：执行过程中将发生异常
@@ -72,8 +71,7 @@ public class CreateThreadPoolDemo {
     public void testNewScheduledThreadPool() {
         ScheduledExecutorService scheduled = Executors.newScheduledThreadPool(1);
         for (int i = 0; i < 2; i++) {
-            scheduled.scheduleAtFixedRate(new TargetTask(),
-                    0, 5000, TimeUnit.MILLISECONDS);
+            scheduled.scheduleAtFixedRate(new TargetTask(), 0, 5000, TimeUnit.MILLISECONDS);
             // 以上的参数中：
             // 0表示首次执行任务的延迟时间，500表示每次执行任务的间隔时间
             // TimeUnit.MILLISECONDS所设置的时间的计时单位为毫秒
@@ -88,8 +86,7 @@ public class CreateThreadPoolDemo {
     public void testNewScheduledThreadPool2() {
         ScheduledExecutorService scheduled = Executors.newScheduledThreadPool(2);
         for (int i = 0; i < 2; i++) {
-            scheduled.scheduleAtFixedRate(new TargetTask(),
-                    0, 5000, TimeUnit.MILLISECONDS);
+            scheduled.scheduleAtFixedRate(new TargetTask(), 0, 5000, TimeUnit.MILLISECONDS);
             // 以上的参数中：
             // 0表示首次执行任务的延迟时间，500表示每次执行任务的间隔时间
             // TimeUnit.MILLISECONDS所设置的时间的计时单位为毫秒
@@ -101,16 +98,14 @@ public class CreateThreadPoolDemo {
 
     @Test
     public void testThreadPoolExecutor() {
-        ThreadPoolExecutor executor = new ThreadPoolExecutor(
-                3, // corePoolSize
+        ThreadPoolExecutor executor = new ThreadPoolExecutor(3, // corePoolSize
                 100, // maximumPoolSize
                 100, // keepAliveTime
                 TimeUnit.SECONDS, // unit
                 new LinkedBlockingDeque<>(100));// workQueue
         for (int i = 0; i < 5; i++) {
             final int taskIndex = i;
-            executor.execute(() ->
-            {
+            executor.execute(() -> {
                 Print.tco("taskIndex = " + taskIndex);
                 try {
                     Thread.sleep(3000);
@@ -120,8 +115,7 @@ public class CreateThreadPoolDemo {
             });
         }
         while (true) {
-            Print.tco("- activeCount:" + executor.getActiveCount() +
-                    " - taskCount:" + executor.getTaskCount());
+            Print.tco("- activeCount:" + executor.getActiveCount() + " - taskCount:" + executor.getTaskCount());
             sleepSeconds(1);
         }
     }
@@ -148,8 +142,7 @@ public class CreateThreadPoolDemo {
     @org.junit.Test
     public void testThreadFactory() {
         // 使用自定义线程工厂，快捷创建线程池
-        ExecutorService pool =
-                Executors.newFixedThreadPool(2, new SimpleThreadFactory());
+        ExecutorService pool = Executors.newFixedThreadPool(2, new SimpleThreadFactory());
         for (int i = 0; i < 5; i++) {
             pool.submit(new TargetTask());
         }
@@ -180,14 +173,7 @@ public class CreateThreadPoolDemo {
         ThreadFactory threadFactory = new SimpleThreadFactory();
         // 拒绝和异常策略
         RejectedExecutionHandler policy = new CustomIgnorePolicy();
-        ThreadPoolExecutor pool = new ThreadPoolExecutor(
-                corePoolSize,
-                maximumPoolSize,
-                keepAliveTime, unit,
-                workQueue,
-                threadFactory,
-                policy);
-
+        ThreadPoolExecutor pool = new ThreadPoolExecutor(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory, policy);
         // 预启动所有核心线程
         pool.prestartAllCoreThreads();
         for (int i = 1; i <= 10; i++) {
@@ -204,9 +190,7 @@ public class CreateThreadPoolDemo {
 
     @org.junit.Test
     public void testHooks() {
-        ExecutorService pool = new ThreadPoolExecutor(2,
-                4, 60,
-                TimeUnit.SECONDS, new LinkedBlockingQueue<>(2)) {
+        ExecutorService pool = new ThreadPoolExecutor(2, 4, 60, TimeUnit.SECONDS, new LinkedBlockingQueue<>(2)) {
             @Override
             protected void terminated() {
                 Print.tco("调度器已经终止!");
@@ -219,6 +203,7 @@ public class CreateThreadPoolDemo {
                 START_TIME.set(System.currentTimeMillis());
                 super.beforeExecute(t, target);
             }
+
             @Override
             protected void afterExecute(Runnable target, Throwable t) {
                 super.afterExecute(target, t);
@@ -267,7 +252,8 @@ public class CreateThreadPoolDemo {
                 Print.tco("任务完成");
             }
         } catch (Exception e) {
-            Print.tco(e.getCause().getMessage());
+            Print.tco(e.getCause()
+                       .getMessage());
         }
         sleepSeconds(10);
         // 关闭线程池

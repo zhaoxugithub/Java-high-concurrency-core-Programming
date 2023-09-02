@@ -13,13 +13,9 @@ import org.apache.zookeeper.data.Stat;
 @Slf4j
 @Data
 public class ZKclient {
-
-
     private CuratorFramework client;
-
-    //Zk集群地址SnowflakeIdWorker
+    // Zk集群地址SnowflakeIdWorker
     private static final String ZK_ADDRESS = "127.0.0.1:2181";
-
     public static ZKclient instance = null;
 
     static {
@@ -28,25 +24,21 @@ public class ZKclient {
     }
 
     private ZKclient() {
-
     }
 
     public void init() {
-
         if (null != client) {
             return;
         }
-        //创建客户端
+        // 创建客户端
         client = ClientFactory.createSimple(ZK_ADDRESS);
-
-        //启动客户端实例,连接服务器
+        // 启动客户端实例,连接服务器
         client.start();
     }
 
     public void destroy() {
         CloseableUtils.closeQuietly(client);
     }
-
 
     /**
      * 创建节点
@@ -60,10 +52,9 @@ public class ZKclient {
                 payload = data.getBytes("UTF-8");
             }
             client.create()
-                    .creatingParentsIfNeeded()
-                    .withMode(CreateMode.PERSISTENT)
-                    .forPath(zkPath, payload);
-
+                  .creatingParentsIfNeeded()
+                  .withMode(CreateMode.PERSISTENT)
+                  .forPath(zkPath, payload);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -78,7 +69,7 @@ public class ZKclient {
                 return;
             }
             client.delete()
-                    .forPath(zkPath);
+                  .forPath(zkPath);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -91,18 +82,15 @@ public class ZKclient {
      */
     public boolean isNodeExist(String zkPath) {
         try {
-
-            Stat stat = client.checkExists().forPath(zkPath);
+            Stat stat = client.checkExists()
+                              .forPath(zkPath);
             if (null == stat) {
                 log.info("节点不存在:{} ", zkPath);
                 return false;
             } else {
-
                 log.info("节点存在 stat is:{} ", stat.toString());
                 return true;
-
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -114,19 +102,15 @@ public class ZKclient {
      */
     public String createEphemeralSeqNode(String srcpath) {
         try {
-
             // 创建一个 ZNode 节点
             String path = client.create()
-                    .creatingParentsIfNeeded()
-                    .withMode(CreateMode.EPHEMERAL_SEQUENTIAL)
-                    .forPath(srcpath);
-
+                                .creatingParentsIfNeeded()
+                                .withMode(CreateMode.EPHEMERAL_SEQUENTIAL)
+                                .forPath(srcpath);
             return path;
-
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
-
 }
